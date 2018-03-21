@@ -1,33 +1,41 @@
 "use strict";
 
-var Translate = require('@google-cloud/translate');
-var async = require('async');
+const Translate = require('@google-cloud/translate');
 
-var TranslateService = {};
-var translate = new Translate({
-  keyFilename: './src/translator.conf.json',
+const TranslateService = {};
+const translate = new Translate({
+    keyFilename: './translator.conf.json',
 });
 
-TranslateService.translateText = function (content, targetLang, next) {
+TranslateService.translateText = (content, targetLang) => {
 
-  var calls = [];
+    const calls = [];
 
-  calls.push(function (callback) {
+    /* I'll use "Promise.all" to solve this instead
+       of "async.watterfall". In the original code
+       there was no need to use either, cos there was
+       only one element within the array. */
 
-    translate
-      .translate( content, targetLang )
-      .then(results => {
-        return callback(null, results[0]);
-      })
-      .catch(err => {
-        console.error('ERROR:', err);
-      });
-  });
+    content.forEach(item => {
+        calls.push(
+        translate
+          .translate( item, targetLang )
+          .then(results => {
+              return results[0]
+          })
+          .catch(err => console.error(`ERROR: ${err}`));
+      );
+    })
 
-  async.waterfall(calls, function (err, response) {
-    if (next) next(err, response);
-  });
-};
+    // I rather return a Promise than a Callback
 
+    return new Promise((resolve, reject) => {
+        Promise.all(calls)
+            .then(result => {
+                resolve(result);
+            })
+            .catch(err => reject(err));
+    })
+}
 
 module.exports = TranslateService;
