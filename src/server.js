@@ -1,16 +1,22 @@
 const translate = require('./translator');
 
-const text = "quiero trabajar con los mejores";
-const targetLang = 'ja';
+// Im gonna use an array, in case boss wanna
+// translate more than one line.
 
-console.log(translate);
+const text = [
+    "quiero trabajar con los mejores",
+    "hola Caracola, toma una Coca-Cola",
+    "yo voy con Wadu Hek",
+    "quieres mi bici amarilla?"
+]
+const targetLang = 'en';
 
-translate.translateText(text, targetLang, function (err, result) {
-
-  if (err) {
-    next(err);
-    return;
-  }
-  console.log(result);
-
-});
+translate.translateText(text, targetLang)
+.then(result => {
+    result.forEach(sentence => {
+        console.log(sentence);
+    })
+})
+.catch((error) => {
+    next(error);
+})
