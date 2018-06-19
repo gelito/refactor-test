@@ -1,7 +1,7 @@
-var translate = require('./translator')
+const translate = require('./translator')
 
-var text = "quiero trabajar con los mejores"
-var targetLang = 'en'
+let text = "quiero trabajar con los mejores"
+let targetLang = 'en'
 
 console.log(translate);
 
