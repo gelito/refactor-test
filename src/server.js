@@ -1,16 +1,12 @@
-var translate = require('./translator')
+const translate = require('./translator');
 
-var text = "quiero trabajar con los mejores"
-var targetLang = 'en'
+const text = ["Hola mundo", "quiero trabajar con los mejores"] // could be an array of strings or a unique string
+const targetLang = 'en' // must be a string
 
-console.log(translate);
-
-translate.translateText(text, targetLang, function (err, result) {
-
-  if (err) {
-    next(err);
-    return;
-  }
-  console.log(result);
-
-});
+translate.translateText(text, targetLang)
+  .then(response => {
+    console.log(response[0])
+  })
+  .catch(error => {
+    console.error(error)
+  })
