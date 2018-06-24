@@ -1,5 +1,3 @@
-"use strict";
-
 const Translate = require('@google-cloud/translate');
 const async = require('async');
 
